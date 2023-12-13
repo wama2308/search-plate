@@ -22,7 +22,7 @@ function RoutesNoAuth(props) {
                         <MenuRight
                             navigation={navigation}
                             option='account'
-                            logoutAction={() => setOpen(true)}
+                            action={() => setOpen(true)}
                         />
                     ), 
                 }}

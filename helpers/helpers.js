@@ -17,7 +17,7 @@ export const flashMessageAction = (message, type) => {
 
 export const dataMenuAccount = [
     {
-        label: 'IMEI',
-        route: 'imei'
+        label: 'Código',
+        route: 'codigo'
     }
 ]

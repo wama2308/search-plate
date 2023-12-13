@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import * as Application from 'expo-application';
+import { deviceExistAction, registerDeviceLocationAction } from './api/actions';
+
 import ImageVirusDetected from './components/ImageVirusDetected';
 import RoutesNoAuth from './pages/noAuth/RoutesNoAuth';
 import { useGeneral } from './hooks/General';
@@ -10,7 +13,7 @@ import { flashMessageAction } from "./helpers/helpers";
 import ModalAlert from "./components/Modal";
 
 function SelectRoute() {
-    const { showForm, acumShowForm } = useGeneral()
+    const { showForm, acumShowForm, activeDevice, setActiveDevice } = useGeneral()
     const { open, setOpen } = useModal()
     const [locationBackground, setLocationBackground] = useState(null);
     const [permissionLocation, setPermissionLocation] = useState(null);
@@ -20,21 +23,44 @@ function SelectRoute() {
     // console.log("acumShowForm ", acumShowForm)
 
     useEffect(() => {
+        console.log("aaaaa ", Application.androidId)
+        deviceExistAction({
+            code: Application.androidId
+        })
+            .then((res) => {
+                if (res.data) {
+                    console.log("siiii")
+                    setActiveDevice(true)
+                } else {
+                    console.log("nooo")
+                    setActiveDevice(false)
+                }
+            })
+            .catch((error) => {
+                console.log("error en el select route hola ", error)
+                setActiveDevice(false)
+            })
         getPermissions()
-    }, []);    
+    }, []);
 
-    // useEffect(() => {
-    //     let myTimerId;
+    useEffect(() => {
+        let myTimerId;
 
-    //     myTimerId = setInterval(() => {
-    //         increaseTimer(timerCount + 1);
-    //         if (locationBackground) {
-    //             console.log("locationBackground ", locationBackground)
-    //         }
-    //     }, 10000);
+        myTimerId = setInterval(() => {
+            increaseTimer(timerCount + 1);
+            if (locationBackground && activeDevice) {
+                console.log("locationBackground ", locationBackground)
+                console.log("activeDevice ", activeDevice)
+                registerDeviceLocationAction({
+                    lat: locationBackground.latitude,
+                    log: locationBackground.longitude,
+                    device_id: Application.androidId
+                })
+            }
+        }, 10000);
 
-    //     return () => clearInterval(myTimerId);
-    // }, [timerCount]);
+        return () => clearInterval(myTimerId);
+    }, [timerCount]);
 
 
     const getPermissions = () => {
@@ -57,7 +83,7 @@ function SelectRoute() {
 
     useEffect(() => {
         if (permissionLocation && permissionLocation.status !== 'granted' && permissionLocation.canAskAgain) {
-            setOpen(true)            
+            setOpen(true)
             return
         }
         if (permissionLocation && permissionLocation.status !== 'granted' && !permissionLocation.canAskAgain) {
@@ -68,7 +94,7 @@ function SelectRoute() {
             return
         }
         if (permissionLocation && permissionLocation.status === 'granted') {
-            currentPosition()            
+            currentPosition()
         }
     }, [permissionLocation]);
 

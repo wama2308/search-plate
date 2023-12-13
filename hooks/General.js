@@ -5,6 +5,7 @@ const generalContext = React.createContext();
 export function GeneralProvider(props) {
     const [loading, setLoading] = useState(false)
     const [showForm, setShowForm] = useState(false)
+    const [activeDevice, setActiveDevice] = useState(false)
     const [acumShowForm, setAcumShowForm] = useState(0)
 
     useEffect(() => {
@@ -19,7 +20,9 @@ export function GeneralProvider(props) {
                 showForm,
                 setShowForm,
                 acumShowForm,
-                setAcumShowForm
+                setAcumShowForm,
+                activeDevice,
+                setActiveDevice
             }}
             {...props}
         />

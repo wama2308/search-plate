@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import "./api/interceptors"
 import SelectRoute from './SelectRoute';
 import FlashMessage from "react-native-flash-message";
 import { GeneralProvider } from './hooks/General';

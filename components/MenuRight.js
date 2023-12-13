@@ -42,7 +42,7 @@ export default function MenuRight(props) {
                             <MenuItem
                                 key={key}
                                 onPress={() => {
-                                    props.logoutAction();
+                                    props.action();
                                     hideMenu();
                                 }}
                             >

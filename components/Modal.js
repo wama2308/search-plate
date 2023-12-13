@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: "lightgray"
     },
-    modalBody: {
+    modalBody: {                
         backgroundColor: "#fff",
         paddingVertical: 20,
         paddingHorizontal: 10
