@@ -23,21 +23,17 @@ function SelectRoute() {
     // console.log("acumShowForm ", acumShowForm)
 
     useEffect(() => {
-        console.log("aaaaa ", Application.androidId)
         deviceExistAction({
             code: Application.androidId
         })
             .then((res) => {
-                if (res.data) {
-                    console.log("siiii")
+                if (res.data) {                    
                     setActiveDevice(true)
-                } else {
-                    console.log("nooo")
+                } else {                    
                     setActiveDevice(false)
                 }
             })
-            .catch((error) => {
-                console.log("error en el select route hola ", error)
+            .catch((error) => {                
                 setActiveDevice(false)
             })
         getPermissions()
@@ -48,14 +44,12 @@ function SelectRoute() {
 
         myTimerId = setInterval(() => {
             increaseTimer(timerCount + 1);
-            if (locationBackground && activeDevice) {
-                console.log("locationBackground ", locationBackground)
-                console.log("activeDevice ", activeDevice)
-                registerDeviceLocationAction({
-                    lat: locationBackground.latitude,
-                    log: locationBackground.longitude,
-                    device_id: Application.androidId
-                })
+            if (locationBackground && activeDevice) {                
+                // registerDeviceLocationAction({
+                //     lat: locationBackground.latitude,
+                //     log: locationBackground.longitude,
+                //     device_id: Application.androidId
+                // })
             }
         }, 10000);
 

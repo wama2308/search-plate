@@ -25,3 +25,16 @@ export const registerDeviceLocationAction = (data) => {
             })
     })
 }
+
+export const searchPlateAction = (data) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`/vehicule/quick/search/plate`, data)
+            .then(res => {
+                resolve(res)
+            })
+            .catch(error => {                
+                reject(error)
+            })
+    })
+}
