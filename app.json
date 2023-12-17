@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "search-plate",
-    "slug": "search-plate",
+    "name": "plates",
+    "slug": "plates",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -19,12 +19,31 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon-.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
+      "package": "com.w1lfr3d0.plates"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Permitir que Genessis APP use su ubicación."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1d25907b-f4da-4115-ab8b-2e461465a1b3"
+      }
     }
   }
 }

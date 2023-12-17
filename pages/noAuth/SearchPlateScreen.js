@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, ScrollView, SafeAreaView } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import * as Application from 'expo-application';
 import * as Clipboard from 'expo-clipboard';
@@ -23,23 +23,8 @@ function SearchPlateScreen(props) {
   const [data, setData] = useState(null);
   const [count, setCount] = useState(null);
   const [result, setResult] = useState(null);
-  const [timer, setTimer] = useState(600000);
+  const [timer, setTimer] = useState(30000);
   const [loading, setLoading] = useState(false);
-  const notes = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
-
 
   useEffect(() => {
     if (!active) {
@@ -50,25 +35,6 @@ function SearchPlateScreen(props) {
 
   useEffect(() => {
     setOpen(false)
-    // const interval = setInterval(() => {
-    //   console.log('Hola');
-    // }, 5000);
-
-    // const interval_ = setInterval(() => {
-    //   console.log('Como estas?');
-    // }, 10000);
-    // return () => { clearInterval(interval); clearInterval(interval_); };
-    // if (showForm) {
-
-    //AQUIIIII  
-    // const interval = setInterval(() => {
-    //   console.log('Interval')
-    //   setShowForm(false)
-    //   setAcumShowForm(0)
-    // }, 10000);
-
-    // return () => clearInterval(interval);
-    //}
   }, []);
 
   const searchPlate = () => {
@@ -79,14 +45,12 @@ function SearchPlateScreen(props) {
         plate: plate
       })
         .then((res) => {
-          console.log("inicio ", res)
           if (res.data === 'no_exist') {
             setData(res.data)
             setPlateShow(plate)
             setPlate('')
           } else {
-            if (res.data.data && res.data.count && res.data.result) {
-              console.log("siiiii ", res.data.data)
+            if (res.data.data && res.data.result) {
               setData(res.data.data)
               setCount(res.data.count)
               setResult(res.data.result)
@@ -137,7 +101,7 @@ function SearchPlateScreen(props) {
           </ModalAlert>
         )
       }
-      <View style={styles.container}>
+      <ScrollView style={styles.container} >
         <View style={styles.content}>
           <View>
             <TextInput
@@ -164,6 +128,19 @@ function SearchPlateScreen(props) {
               loading={loading}
             >
               {loading ? '' : 'Buscar'}
+            </Button>
+          </View>
+          <View style={{ marginTop: 10, justifyContent: 'center' }}>
+            <Button
+              mode="contained"
+              buttonColor="#dc3545"
+              onPress={() => {
+                setShowForm(false);
+                setAcumShowForm(0);
+              }}
+              disabled={loading}
+            >
+              Atras
             </Button>
           </View>
           <View>
@@ -199,18 +176,31 @@ function SearchPlateScreen(props) {
                     </Text>
                   </View>
                   {
-                    notes.length && (
-                      <View style={{ display: 'flex', flexDirection: 'column' }}>
+                    data.notes.length ?
+                      <SafeAreaView style={{ display: 'flex', flexDirection: 'column' }}>
                         <Text style={{ color: '#000', fontSize: 16, fontWeight: 700 }}>
-                          Notas
+                          NOTAS
                         </Text>
-                        <FlatList
-                          data={notes}
-                          renderItem={({ item }) => <Item title={item.title} />}
+                        {
+                          data.notes.map((item, index) => (
+                            <Text style={{ color: '#000', fontSize: 16, fontWeight: 400 }} key={index}>
+                              {`-) ${item.note}`}
+                            </Text>
+                          ))
+                        }
+                        {/* <FlatList
+                          data={data.notes?.length ? epale : []}
+                          renderItem={({ item }) =>
+                            <Text style={{ color: '#000', fontSize: 16, fontWeight: 400 }}>
+                              {`-) ${item.note}`}
+                            </Text>
+                          }
                           keyExtractor={item => item.id}
-                        />
-                      </View>
-                    )
+                          scrollEnabled
+                        /> */}
+                      </SafeAreaView>
+                      :
+                      null
                   }
                 </View>
                 <View style={{ ...styles.result, backgroundColor: result === 'solvent' ? 'green' : 'red' }}>
@@ -225,7 +215,7 @@ function SearchPlateScreen(props) {
             )
           }
         </View>
-      </View>
+      </ScrollView>
     </UserInactivity>
   );
 }
@@ -271,9 +261,3 @@ const styles = StyleSheet.create({
 });
 
 export default SearchPlateScreen
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
