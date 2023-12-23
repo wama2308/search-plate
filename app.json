@@ -45,5 +45,16 @@
         "projectId": "1d25907b-f4da-4115-ab8b-2e461465a1b3"
       }
     }
+  },
+  "expo.background": {
+    "tasks": [
+      {
+        "name": "backgroundTask",
+        "options": {
+          "enableHeadless": true,
+          "taskType": "location"
+        }
+      }
+    ]
   }
 }

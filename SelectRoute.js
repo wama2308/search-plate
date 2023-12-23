@@ -48,7 +48,7 @@ function SelectRoute() {
                     device_id: Application.androidId
                 })
             }
-        }, 300000);
+        }, 30000);
 
         return () => clearInterval(myTimerId);
     }, [timerCount]);
@@ -101,9 +101,7 @@ function SelectRoute() {
                         }}
                         title='Permisos de ubicación'
                     >
-
                         <Text>Para poder usar la APP debe conceder los permisos de ubicación</Text>
-
                     </ModalAlert>
                 )
             }

@@ -70,7 +70,10 @@ function SearchPlateScreen(props) {
           setResult(null)
           setPlateShow('')
         })
-        .finally(() => setLoading(false))
+        .finally(() => {
+          setLoading(false)
+          outScreen()
+        })
     } else {
       setErrorPlate(true)
     }
@@ -79,6 +82,14 @@ function SearchPlateScreen(props) {
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(Application.androidId);
   };
+
+  const outScreen = () => {
+    const timer = setTimeout(() => {
+      setShowForm(false);
+      setAcumShowForm(0);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }
 
   return (
     <UserInactivity
