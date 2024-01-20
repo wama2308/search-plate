@@ -7,7 +7,8 @@ import UserInactivity from 'react-native-user-inactivity';
 import ModalAlert from '../../components/Modal';
 import { useGeneral } from '../../hooks/General';
 import { useModal } from '../../hooks/Modal';
-import { searchPlateAction } from '../../api/actions';
+import { deviceExistAction, searchPlateAction } from '../../api/actions';
+import { flashMessageAction } from '../../helpers/helpers';
 
 
 function SearchPlateScreen(props) {
@@ -15,7 +16,7 @@ function SearchPlateScreen(props) {
   const { navigation } = props
   const { open, setOpen } = useModal()
 
-  const { setAcumShowForm, setShowForm, activeDevice } = useGeneral()
+  const { setAcumShowForm, setShowForm, activeDevice, setActiveDevice } = useGeneral()
   const [active, setActive] = useState(true);
   const [plate, setPlate] = useState('');
   const [plateShow, setPlateShow] = useState('');
@@ -91,6 +92,38 @@ function SearchPlateScreen(props) {
     return () => clearTimeout(timer);
   }
 
+  const retryConnection = () => {
+    setLoading(true)
+    deviceExistAction({
+      code: Application.androidId
+    })
+      .then((res) => {
+        if (res.data) {
+          setActiveDevice(true)
+          flashMessageAction(
+            "¡Dispositivo verificado!",
+            "success",
+          );
+        } else {
+          setActiveDevice(false)
+          flashMessageAction(
+            "¡Error de conexión con el servidor, verifique su conexión a internet o intente mas tarde!",
+            "danger"
+          );
+        }
+      })
+      .catch(() => {
+        setActiveDevice(false)
+        flashMessageAction(
+          "¡Error de conexión con el servidor, verifique su conexión a internet o intente mas tarde!",
+          "danger"
+        );
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
   return (
     <UserInactivity
       isActive={active}
@@ -131,15 +164,28 @@ function SearchPlateScreen(props) {
             }
           </View>
           <View style={{ marginTop: 20, justifyContent: 'center' }}>
-            <Button
-              mode="contained"
-              buttonColor="#0d6efd"
-              onPress={() => searchPlate()}
-              disabled={(!activeDevice || loading) ? true : false}
-              loading={loading}
-            >
-              {loading ? '' : 'Buscar'}
-            </Button>
+            {
+              activeDevice ?
+                <Button
+                  mode="contained"
+                  buttonColor="#0d6efd"
+                  onPress={() => searchPlate()}
+                  disabled={(!activeDevice || loading) ? true : false}
+                  loading={loading}
+                >
+                  {loading ? '' : 'Buscar'}
+                </Button>
+                :
+                <Button
+                  mode="contained"
+                  buttonColor="#0d6efd"
+                  onPress={() => retryConnection()}
+                  disabled={loading ? true : false}
+                  loading={loading}
+                >
+                  {loading ? '' : 'Reconectar'}
+                </Button>
+            }
           </View>
           <View style={{ marginTop: 10, justifyContent: 'center' }}>
             <Button

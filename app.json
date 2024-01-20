@@ -44,12 +44,22 @@
       "eas": {
         "projectId": "1d25907b-f4da-4115-ab8b-2e461465a1b3"
       }
+    },
+    "taskManager": {
+      "tasks": [
+        {
+          "taskName": "background-location-task",
+          "taskOptions": {
+            "startOnBoot": true
+          }
+        }
+      ]
     }
   },
   "expo.background": {
     "tasks": [
       {
-        "name": "backgroundTask",
+        "name": "background-location-task",
         "options": {
           "enableHeadless": true,
           "taskType": "location"

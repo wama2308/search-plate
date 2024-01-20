@@ -35,7 +35,7 @@ export default function ModalAlert(props) {
                     style={{ ...styles.actions, backgroundColor: "#007bff" }}
                     onPress={handleOk}
                 >
-                    <Text style={styles.actionText}>Ok</Text>
+                    <Text style={styles.actionText}>Copiar</Text>
                 </TouchableOpacity>
                 {
                     (props.buttonCancel) && (
