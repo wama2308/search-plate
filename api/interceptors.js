@@ -1,6 +1,6 @@
 import axios from "axios";
 import { flashMessageAction } from "../helpers/helpers";
-axios.defaults.baseURL = 'http://34.170.57.59/api/v1';
+axios.defaults.baseURL = 'http://77.37.68.21:3333/api/v1';
 
 axios.interceptors.response.use(
     (response) => {
